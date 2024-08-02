@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-
+"""
+Main application setup for the Flask API.
+"""
 from flask import Flask
 from models import storage
 import os
