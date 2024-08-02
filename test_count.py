@@ -9,4 +9,3 @@ all = storage.count()
 
 print(f"States: {states}")
 print(f"All Objects: {all}")
-
