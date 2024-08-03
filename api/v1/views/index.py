@@ -3,7 +3,7 @@
 from api.v1.views import app_views
 
 
-@app_views.route('/status')
+@app_views.route('/status', strict_slashes=False, methods=["GET"])
 def status():
     """Returns JSON indicating the status of the app."""
     return {"status": "OK"}
