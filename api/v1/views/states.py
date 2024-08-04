@@ -10,18 +10,17 @@ from flask import abort, request, jsonify
 @app_views.route("/states", strict_slashes=False, methods=["GET"])
 @app_views.route("/states/<state_id>", strict_slashes=False, methods=["GET"])
 def states(state_id=None):
-    """show states and states with id"""
-    states_list = []
-    if state_id is None:
-        all_objs = storage.all(State).values()
-        for v in all_objs:
-            states_list.append(v.to_dict())
-        return jsonify(states_list)
-    else:
-        result = storage.get(State, state_id)
-        if result is None:
+    if state_id:
+        state = storage.get(State, state_id)
+        if state is None:
             abort(404)
-        return jsonify(result.to_dict())
+        return jsonify(state.to_dict())
+    else:
+        states_list = []
+        states = storage.all(State)
+        for obj in states.values():
+            states_list.append(obj.to_dict())
+        return jsonify(states_list)
 
 
 @app_views.route("/states/<state_id>", strict_slashes=False,
