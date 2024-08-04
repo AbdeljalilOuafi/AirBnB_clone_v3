@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-"""State objects that handles all default RESTFul API actions"""
-
+"""This Module implements CRUD operations for states"""
 from api.v1.views import app_views
-from models import storage
 from models.state import State
-from flask import abort, request, jsonify
+from models import storage
+from flask import jsonify, abort, request
 
 
 @app_views.route("/states", strict_slashes=False, methods=["GET"])
@@ -25,11 +24,10 @@ def states(state_id=None):
 
 @app_views.route("/states/<state_id>",
                  strict_slashes=False, methods=["DELETE"])
-def states_delete(state_id):
-    """deletes a state"""
+def del_state(state_id):
     state = storage.get(State, state_id)
     if state is None:
-        abort(400)
+        abort(404)
     storage.delete(state)
     storage.save()
     return jsonify({}), 200
@@ -37,9 +35,8 @@ def states_delete(state_id):
 
 @app_views.route("/states", strict_slashes=False, methods=["POST"])
 def create_state():
-    """create a new post req"""
     data = request.get_json(force=True, silent=True)
-    if not data:
+    if data is None:
         abort(400, "Not a JSON")
     if "name" not in data:
         abort(400, "Missing name")
@@ -50,13 +47,12 @@ def create_state():
 
 @app_views.route("/states/<state_id>", strict_slashes=False, methods=["PUT"])
 def update_state(state_id):
-    """update state"""
-    obj = storage.get(State, state_id)
-    if obj is None:
+    state = storage.get(State, state_id)
+    if state is None:
         abort(404)
     data = request.get_json(force=True, silent=True)
-    if not data:
+    if data is None:
         abort(400, "Not a JSON")
-    obj.name = data.get("name", obj.name)
-    obj.save()
-    return jsonify(obj.to_dict()), 200
+    state.name = data.get("name", state.name)
+    state.save()
+    return jsonify(state.to_dict()), 200
