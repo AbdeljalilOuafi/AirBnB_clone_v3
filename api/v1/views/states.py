@@ -38,8 +38,7 @@ def create_state():
     data = request.get_json(force=True, silent=True)
     if data is None:
         abort(400, "Not a JSON")
-    name = data.get("name", None)
-    if name is None:
+    if "name" not in data:
         abort(400, "Missing name")
     new_state = State(**data)
     new_state.save()
