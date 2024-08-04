@@ -12,9 +12,8 @@ def states(state_id=None):
     if state_id:
         state = storage.get(State, state_id)
         if state is None:
-            return abort(404)
-        else:
-            return jsonify(state.to_dict())
+            abort(404)
+        return jsonify(state.to_dict())
     else:
         states_list = []
         states = storage.all(State)
@@ -43,8 +42,7 @@ def create_state():
     if name is None:
         abort(400, "Missing name")
     new_state = State(**data)
-    storage.new(new_state)
-    storage.save()
+    new_state.save()
     return jsonify(new_state.to_dict()), 201
 
 
@@ -57,5 +55,5 @@ def update_state(state_id):
     if data is None:
         abort(400, "Not a JSON")
     state.name = data.get("name", state.name)
-    storage.save()
+    state.save()
     return jsonify(state.to_dict()), 200
