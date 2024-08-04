@@ -17,8 +17,9 @@ app.register_blueprint(app_views, url_prefix="/api/v1")
 def page_not_found(e):
     return jsonify({"error": "Not found"}), 404
 
+
 @app.errorhandler(400)
-def page_not_found(e):
+def page_not_found_400(e):
     message = e.description
     return message, 400
 
