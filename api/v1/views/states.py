@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+"""This Module implements CRUD operations for states"""
 from api.v1.views import app_views
 from models.state import State
 from models import storage
