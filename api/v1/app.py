@@ -15,17 +15,20 @@ app.register_blueprint(app_views, url_prefix="/api/v1")
 
 @app.errorhandler(404)
 def page_not_found(e):
+    """this views handles 404 responses"""
     return jsonify({"error": "Not found"}), 404
 
 
 @app.errorhandler(400)
 def page_not_found_400(e):
+    """this views handles 400 responses"""
     message = e.description
     return message, 400
 
 
 @app.teardown_appcontext
 def close(ctx):
+    """this view closes the database after each response"""
     storage.close()
 
 
