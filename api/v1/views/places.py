@@ -66,25 +66,18 @@ def create_place(city_id):
     return jsonify(new_place.to_dict()), 201
 
 
-@app_views.route("/places/<place_id>", strict_slashes=False, methods=["PUT"])
-def update_placey(place_id):
-    """update place"""
+@app_views.route("/places/<place_id>",
+                 strict_slashes=False, methods=["PUT"])
+def update_place(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
     data = request.get_json(force=True, silent=True)
-    if not data:
+    if data is None:
         abort(400, "Not a JSON")
-    place.name = data.get("name", place.name)
-    place.description = data.get("description",
-                                 place.description)
-    place.number_rooms = data.get("number_rooms",
-                                  place.number_rooms)
-    place.number_bathrooms = data.get("number_bathrooms",
-                                      place.number_bathrooms)
-    place.max_guest = data.get("max_guest", place.max_guest)
-    place.price_by_night = data.get("price_by_night", place.price_by_night)
-    place.latitude = data.get("latitude", place.latitude)
-    place.longitude = data.get("longitude", place.longitude)
+    for key, value in data.items():
+        if key in ["id", "user_id", "city_id", "created_at", "updated_at"]:
+            continue
+        setattr(place, key, value)
     place.save()
     return jsonify(place.to_dict()), 200
