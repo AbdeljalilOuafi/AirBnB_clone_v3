@@ -78,6 +78,8 @@ def update_place(place_id):
     for key, value in data.items():
         if key in ["id", "user_id", "city_id", "created_at", "updated_at"]:
             continue
-        setattr(place, key, value)
+        if hasattr(place, key):
+            setattr(place, key, value)
+
     place.save()
     return jsonify(place.to_dict()), 200
