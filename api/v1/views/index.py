@@ -12,6 +12,7 @@ from models.user import User
 
 @app_views.route("/status", strict_slashes=False, methods=["GET"])
 def status():
+    """return status for the api"""
     return {
         "status": "OK",
     }
@@ -19,6 +20,7 @@ def status():
 
 @app_views.route("/stats", strict_slashes=False, methods=["GET"])
 def stat():
+    """return stats about each class"""
     amenities = storage.count(Amenity)
     cities = storage.count(City)
     places = storage.count(Place)
