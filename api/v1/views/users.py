@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+"""This Module implements CRUD operations for users"""
 from flask import abort, jsonify, request
 from models import storage
 from models.user import User
